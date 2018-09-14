@@ -1,4 +1,4 @@
-# imooc-mall
+# myMall
 
 > A Vue.js project
 
