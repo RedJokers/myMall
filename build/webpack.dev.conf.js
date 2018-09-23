@@ -12,7 +12,7 @@ const portfinder = require('portfinder')
 
 const express = require('express')
 const app = express()//请求server
-var goodsData = require('./../data/goods.json')//加载本地数据文件
+// var goodsData = require('./../data/goods.json')//加载本地数据文件
 var router = express.Router()
 app.use(router)//通过路由请求数据
 
@@ -51,11 +51,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     },
 
     //模拟获取后台数据
-    before(router) {
-      router.get("/goods",(req, res)=> {
-        res.json(goodsData)
-      })
-    }
+    // before(router) {
+    //   router.get("/goods",(req, res)=> {
+    //     res.json(goodsData)
+    //   })
+    // }
   },
   plugins: [
     new webpack.DefinePlugin({

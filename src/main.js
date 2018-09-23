@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import vueLazyload from 'vue-lazyload'
-
+import infiniteScroll from 'vue-infinite-scroll'
 import './assets/css/base.css'
 import './assets/css/checkout.css'
 import './assets/css/login.css'
@@ -15,6 +15,8 @@ Vue.use(vueLazyload, {
   error: 'dist/error.png',
   loading: 'static/loading-svg/loading-bars.svg'
 })
+
+Vue.use(infiniteScroll)
 
 Vue.config.productionTip = false
 
