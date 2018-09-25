@@ -29,7 +29,12 @@
                 <div class="filter-nav">
                     <span class="sortby">Sort by:</span>
                     <a href="javascript:void(0)" class="default cur">Default</a>
-                    <a href="javascript:void(0)" class="price" @click="sortGoods">Price <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
+                    <a href="javascript:void(0)" class="price" @click="sortGoods">
+                        Price
+                        <svg class="icon icon-arrow-short" :class="{'sort-up': sortUp}">
+                            <use xlink:href="#icon-arrow-short"></use>
+                        </svg>
+                    </a>
                     <a href="javascript:void(0)" class="filterby stopPop" @click="showFliterPop">Filter by</a>
                 </div>
                 <div class="accessory-result">
@@ -73,6 +78,24 @@
             </div>
         </div>
         <div class="md-overlay" v-show="overlay" @click="closePop"></div>
+        <modale :mdShow="mdShow" v-on:close="closeModal">
+            <p slot="message">请先登录</p>
+            <div slot="btnGroup">
+                <a href="javascript:;" class="btn btn--m" @click="closeModal">关闭</a>
+            </div>
+        </modale>
+        <modale :mdShow="mdShowCart">
+            <p slot="message">
+                <svg class="icon icon-status-ok">
+                    <use xlink:href="#icon-status-ok"></use>
+                </svg>
+                加入购物车成功
+            </p>
+            <div slot="btnGroup">
+                <a href="javascript:;" class="btn btn--m" @click="closeModal">继续购物</a>
+                <router-link class="btn btn--m" to="/cart">前往购物车</router-link>
+            </div>
+        </modale>
         <nav-footer></nav-footer>
     </div>
 </template>
@@ -80,12 +103,14 @@
 import NavHeader from './../components/NavHeader.vue'
 import NavFooter from './../components/NavFooter.vue'
 import NavBread from './../components/NavBread.vue'
+import Modale from './../components/Modal.vue'
 import axios from 'axios'
 export default{
   components: {
     NavHeader,
     NavFooter,
-    NavBread
+    NavBread,
+    Modale
   },
   data () {
     return {
@@ -98,6 +123,9 @@ export default{
       pageSize: 8, // 每页多少商品
       busy: false, // vue infinite scroll 插件
       loading: false, // 判断loading div是否显示
+      sortUp: true, // 控制price的箭头方向
+      mdShow: false, // 控制错误模态框的显示隐藏
+      mdShowCart: false, // 控制加入购物车成功模态框的显示隐藏
       priceFilter: [{ // 价格区间
         startPrice: '0.00',
         endPrice: '500.00'
@@ -122,7 +150,7 @@ export default{
         priceLevel: this.priceChecked
       }
       this.loading = true
-      axios.get('/goods', {params}).then((res) => {
+      axios.get('/goods/list', {params}).then((res) => {
         if (flag) { // 判断是否需要进行分页累加 flag为true则累加
           this.goodsList = this.goodsList.concat(res.data.result.list)
           if (res.data.result.count === 0) { // 为0条的时候数据的时候，加载完毕，关闭滚动加载 否则开启加载
@@ -144,6 +172,7 @@ export default{
       this.page = 1
       this.busy = false
       this.getGoodsList()
+      this.sortUp = !this.sortUp
     },
     // 显示fiterBy和遮罩层
     showFliterPop () {
@@ -179,11 +208,15 @@ export default{
     addCart (productId) { // 加入购物车
       axios.post('/goods/addCart', {productId: productId}).then((res) => {
         if (res.data.status === '0') {
-          alert('加入购物车成功！')
-        } else if (res.data.status === '1') {
-          alert('加入购物车失败' + res.msg)
+          this.mdShowCart = true
+        } else {
+          this.mdShow = true
         }
       })
+    },
+    closeModal () {
+      this.mdShow = false
+      this.mdShowCart = false
     }
   },
   mounted () {
@@ -201,5 +234,10 @@ export default{
 .load-more>img {
   height: 50px;
   line-height: 50px
+}
+
+.sort-up {
+  transform: rotate(180deg);
+  transition: all 0.3s ease;
 }
 </style>

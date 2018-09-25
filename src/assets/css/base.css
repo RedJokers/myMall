@@ -1306,4 +1306,10 @@ html {
   .md-modal.modal-normal .content-tit {
     font-size: 12px;
   }
+
+  .md-tips {
+    font-size: 22px !important;
+    font-weight: 300;
+    min-height: 100px;
+  }
 }
