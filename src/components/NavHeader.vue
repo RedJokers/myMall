@@ -48,7 +48,7 @@
                             </li>
                             <li class="regi_form_input noMargin">
                                 <i class="icon IconPwd"></i>
-                                <input type="password" tabindex="2" v-model="userPwd"  name="password" class="regi_login_input regi_login_input_left login-input-no input_text" placeholder="Password">
+                                <input type="password" tabindex="2" v-model="userPwd"  name="password" class="regi_login_input regi_login_input_left login-input-no input_text" placeholder="Password" @keyup.enter="login">
                             </li>
                         </ul>
                     </div>
@@ -64,7 +64,11 @@
 
 <script>
 import axios from 'axios'
+import Modal from './Modal.vue'
 export default {
+  components: {
+    Modal
+  },
   data () {
     return {
       loginModalFlag: false, // 登录页面开关
@@ -85,7 +89,7 @@ export default {
           this.loginModalFlag = false
           this.errorTip = ''
           this.nickName = res.data.result.userName // 让昵称显示
-          console.dir(res)
+          location.reload()
         } else {
           this.errorTip = res.data.msg
         }
@@ -95,6 +99,7 @@ export default {
       axios.post('/users/logout').then((res) => {
         if (res.data.status === '0') {
           this.nickName = ''
+          location.reload()
         }
       })
     },

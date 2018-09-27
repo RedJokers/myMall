@@ -10,6 +10,8 @@ import './assets/css/checkout.css'
 import './assets/css/login.css'
 import './assets/css/product.css'
 
+import {currency} from './util/currency.js'
+
 Vue.use(vueLazyload, {
   preLoad: 1.3,
   error: 'dist/error.png',
@@ -17,6 +19,8 @@ Vue.use(vueLazyload, {
 })
 
 Vue.use(infiniteScroll)
+
+Vue.filter('currency', currency) // 定义全局过滤器
 
 Vue.config.productionTip = false
 
