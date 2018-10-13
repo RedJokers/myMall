@@ -104,6 +104,9 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="empty-container" v-if="cartList.length==0">
+                        <p class="empty">oops! <br> your cart is empty!</p>
+                    </div>
                 </div>
                 <div class="cart-foot-wrap">
                     <div class="cart-foot-inner">
@@ -122,7 +125,7 @@
                                 Item total: <span class="total-price">{{totalPrice | currency('￥')}}</span>
                             </div>
                             <div class="btn-wrap">
-                                <a class="btn btn--red">Checkout</a>
+                                <a class="btn btn--red" :class="{'btn--dis':checkedCount==0}" @click="checkOut">Checkout</a>
                             </div>
                         </div>
                     </div>
@@ -162,13 +165,16 @@ export default {
   },
   computed: {
     checkAllFlag () { // 控制选中全部标签
+      return this.cartList.length === this.checkedCount
+    },
+    checkedCount () { // 计算购物车中选中的商品数量
       let i = 0
       this.cartList.forEach((item, index) => {
         if (item.checked / 1 === 1) {
           i++
         }
       })
-      return this.cartList.length === i
+      return i
     },
     totalPrice () { // 计算商品总价
       let money = 0
@@ -236,6 +242,13 @@ export default {
           console.log(res.data.result)
         }
       })
+    },
+    checkOut () { // 结账,跳转到地址选择页面
+      if (this.checkedCount > 0) {
+        this.$router.push({
+          path: '/address'
+        })
+      }
     }
   },
   mounted () {
@@ -266,5 +279,17 @@ export default {
     width: 30px;
     min-width: 30px;
     text-align: center;
+  }
+  .empty-container {
+    width: 100%;
+    text-align: center;
+    height: 150px;
+    padding-top: 20px;
+  }
+  .empty {
+    text-align: center;
+    font-size: 40px;
+    line-height: 50px;
+    color: #ee7a23
   }
 </style>

@@ -84,7 +84,7 @@
                 <a href="javascript:;" class="btn btn--m" @click="closeModal">关闭</a>
             </div>
         </modale>
-        <modale :mdShow="mdShowCart">
+        <modale :mdShow="mdShowCart" @close="closeModal">
             <p slot="message">
                 <svg class="icon icon-status-ok">
                     <use xlink:href="#icon-status-ok"></use>

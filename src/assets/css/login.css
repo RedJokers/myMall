@@ -22,7 +22,9 @@
   margin-left: -20px;
 }
 .navbar-brand-logo {
-  /*width: 120px;*/
+  width: 140px;
+  margin-left: 40px;
+  margin-top: 7px;
 }
 .header a, .footer a {
   color: #666;
